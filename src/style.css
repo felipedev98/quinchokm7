@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #FAFAF7;
+  --color-mist: #DCEAD5;
+  --color-sage: #B7C5B0;
+  --color-forest: #1C3A0D;
+  --color-moss: #2A2E28;
+  --color-ink: #222222;
+
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Newsreader", ui-serif, Georgia, serif;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+  }
+
+  h1, h2, h3 {
+    @apply font-serif font-normal tracking-tight text-balance;
+    font-optical-sizing: auto;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-forest;
+  }
+
+  /* Secciones que reciben el foco al navegar desde el menú: sin contorno. */
+  section[tabindex='-1']:focus {
+    outline: none;
+  }
+}
