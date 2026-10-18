@@ -1,5 +1,6 @@
 <script setup>
 import SectionHeading from './SectionHeading.vue'
+import Reveal from './Reveal.vue'
 import { USOS } from '../content.js'
 
 const cifras = [
@@ -12,7 +13,7 @@ const cifras = [
 <template>
   <section id="celebraciones" class="bg-paper py-16 md:py-28">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid gap-10 md:grid-cols-2 md:gap-16">
+      <Reveal class="grid gap-10 md:grid-cols-2 md:gap-16">
         <SectionHeading eyebrow="Celebraciones" title="Un espacio solo para tu equipo" emphasis="tu equipo" />
         <div class="md:pt-9">
           <p class="text-pretty text-lg leading-relaxed text-ink">
@@ -25,9 +26,9 @@ const cifras = [
             </div>
           </dl>
         </div>
-      </div>
+      </Reveal>
 
-      <ul class="mt-14 grid gap-3 sm:grid-cols-3 md:mt-20">
+      <Reveal as="ul" class="mt-14 grid gap-3 sm:grid-cols-3 md:mt-20" :delay="0.1">
         <li
           v-for="c in cifras"
           :key="c.value"
@@ -36,7 +37,7 @@ const cifras = [
           <p class="whitespace-nowrap font-serif text-4xl leading-none tracking-tight sm:text-5xl lg:text-6xl">{{ c.value }}</p>
           <p class="text-sm leading-snug text-ink/70 sm:mt-10">{{ c.label }}</p>
         </li>
-      </ul>
+      </Reveal>
     </div>
   </section>
 </template>

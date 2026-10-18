@@ -3,6 +3,7 @@ import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { X } from 'lucide-vue-next'
 import { PROMO_TEXT } from '../config.js'
 import { isPromoDismissed, dismissPromo } from '../lib/promoDismissal.js'
+import { overlayOpen } from '../lib/overlays.js'
 
 const props = defineProps({
   active: { type: Boolean, default: false },
@@ -15,22 +16,13 @@ const el = ref(null)
 let timer
 let formObserver
 
-// Se oculta mientras el formulario está a la vista: ahí ya aparece la promoción
-// y el aviso taparía el botón de enviar.
-const shown = computed(() => visible.value && !nearForm.value)
-
-// Si el menú móvil está abierto (#pagina inert), espera a que se cierre.
-function showWhenFree() {
-  if (document.getElementById('pagina')?.inert) {
-    timer = setTimeout(showWhenFree, 1000)
-    return
-  }
-  visible.value = true
-}
+// Se oculta mientras el formulario está a la vista (ahí ya aparece la promoción)
+// y mientras haya un panel abierto (menú, calendario o foto ampliada).
+const shown = computed(() => visible.value && !nearForm.value && !overlayOpen.value)
 
 onMounted(() => {
   if (!props.active || isPromoDismissed()) return
-  timer = setTimeout(showWhenFree, props.delay)
+  timer = setTimeout(() => { visible.value = true }, props.delay)
 
   const form = document.getElementById('cotiza')
   if (form && typeof IntersectionObserver !== 'undefined') {

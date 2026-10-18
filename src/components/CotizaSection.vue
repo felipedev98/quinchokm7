@@ -1,6 +1,7 @@
 <script setup>
 import { ArrowUpRight } from 'lucide-vue-next'
 import SectionHeading from './SectionHeading.vue'
+import Reveal from './Reveal.vue'
 import QuoteForm from './QuoteForm.vue'
 import { whatsappUrl, DIRECT_MESSAGE } from '../lib/whatsapp.js'
 
@@ -19,7 +20,7 @@ const pasos = [
   <section id="cotiza" class="bg-paper px-2 sm:px-4">
     <div class="rounded-xl bg-moss py-16 text-paper md:py-24">
       <div class="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:px-8 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
-        <div>
+        <Reveal>
           <SectionHeading eyebrow="Cotización" title="Cotiza tu evento" emphasis="evento" tone="dark" />
           <p class="mt-6 max-w-md text-pretty text-lg leading-relaxed text-paper/80">
             Arriendo por hora o por día. Te responden directamente los dueños.
@@ -47,11 +48,11 @@ const pasos = [
           >
             Prefiero escribir directo por WhatsApp<ArrowUpRight :size="18" :stroke-width="1.5" class="ml-1.5 inline-block align-[-4px]" aria-hidden="true" />
           </a>
-        </div>
+        </Reveal>
 
-        <div class="rounded-lg bg-paper p-5 text-ink sm:p-8">
+        <Reveal class="rounded-lg bg-paper p-5 text-ink sm:p-8" :delay="0.15">
           <QuoteForm :promo-active="promoActive" />
-        </div>
+        </Reveal>
       </div>
     </div>
   </section>

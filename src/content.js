@@ -13,7 +13,7 @@ export const EQUIPAMIENTO = [
   { icon: CookingPot, title: 'Cocina equipada', text: 'Con vajilla y utensilios.' },
   { icon: Refrigerator, title: 'Refrigeración', text: 'Refrigerador y congelador.' },
   { icon: Sofa, title: 'Sillas y sillones', text: 'Asientos para todo el grupo.' },
-  { icon: Tv, title: 'Wifi, TV y sonido', text: 'Para presentar o celebrar.' },
+  { icon: Tv, title: 'WiFi, TV y sonido', text: 'Para presentar o celebrar.' },
   { icon: Heater, title: 'Calefacción', text: 'Cómodo en pleno invierno.' },
   { icon: Toilet, title: 'Baños', text: 'Limpios y listos para usar.' },
   { icon: SquareParking, title: 'Estacionamiento', text: 'Dentro del mismo recinto.' },

@@ -2,6 +2,7 @@
 import { asset } from '../lib/asset.js'
 import { Navigation } from 'lucide-vue-next'
 import SectionHeading from './SectionHeading.vue'
+import Reveal from './Reveal.vue'
 import { COORDS } from '../config.js'
 import { osmEmbedUrl, directionsUrl } from '../lib/maps.js'
 </script>
@@ -9,7 +10,7 @@ import { osmEmbedUrl, directionsUrl } from '../lib/maps.js'
 <template>
   <section id="ubicacion" class="bg-paper py-16 md:py-28">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid gap-10 md:grid-cols-2 md:gap-16">
+      <Reveal class="grid gap-10 md:grid-cols-2 md:gap-16">
         <SectionHeading eyebrow="Ubicación" title="A 10 minutos del centro" emphasis="centro" />
 
         <div class="md:pt-9">
@@ -28,9 +29,9 @@ import { osmEmbedUrl, directionsUrl } from '../lib/maps.js'
             Cómo llegar
           </a>
         </div>
-      </div>
+      </Reveal>
 
-      <div class="mt-12 grid gap-3 md:mt-16 md:grid-cols-[1.4fr_1fr]">
+      <Reveal class="mt-12 grid gap-3 md:mt-16 md:grid-cols-[1.4fr_1fr]" :delay="0.1">
         <iframe
           :src="osmEmbedUrl(COORDS)"
           title="Mapa de ubicación de QuinchoKM7"
@@ -44,7 +45,7 @@ import { osmEmbedUrl, directionsUrl } from '../lib/maps.js'
           loading="lazy"
           class="hidden aspect-[4/5] w-full rounded-lg object-cover md:block"
         />
-      </div>
+      </Reveal>
     </div>
   </section>
 </template>

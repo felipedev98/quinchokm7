@@ -1,7 +1,11 @@
 <script setup>
-import { reactive, ref, computed, nextTick } from 'vue'
+import { reactive, ref, computed, nextTick, defineAsyncComponent } from 'vue'
 import { MessageCircle, CircleAlert, ChevronDown } from 'lucide-vue-next'
 import { PROMO_TEXT } from '../config.js'
+import DateFieldPlaceholder from './DateFieldPlaceholder.vue'
+import { cargarDateField } from '../lib/lazy.js'
+
+const DateField = defineAsyncComponent({ loader: cargarDateField, loadingComponent: DateFieldPlaceholder, delay: 0 })
 import { EVENT_TYPES, validateQuote, buildQuoteMessage, whatsappUrl, openWhatsApp, todayIso } from '../lib/whatsapp.js'
 
 const props = defineProps({
@@ -94,16 +98,12 @@ const errorText = 'mt-2 flex items-center gap-1.5 text-sm font-medium'
         </div>
 
         <div class="sm:col-span-2">
-          <label for="fecha" :class="label">Fecha</label>
-          <input
-            id="fecha"
+          <label id="etiqueta-fecha" for="fecha" :class="label">Fecha</label>
+          <DateField
             v-model="quote.fecha"
-            name="fecha"
-            type="date"
             :min="today"
-            :class="control"
-            :aria-invalid="errors.fecha ? 'true' : undefined"
-            :aria-describedby="errors.fecha ? 'error-fecha ayuda-fecha' : 'ayuda-fecha'"
+            :invalid="!!errors.fecha"
+            :describedby="errors.fecha ? 'error-fecha ayuda-fecha' : 'ayuda-fecha'"
           />
           <p v-if="errors.fecha" id="error-fecha" :class="errorText">
             <CircleAlert :size="16" :stroke-width="2" aria-hidden="true" />{{ errors.fecha }}

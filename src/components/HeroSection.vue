@@ -2,6 +2,7 @@
 import { asset } from '../lib/asset.js'
 import { ArrowUpRight } from 'lucide-vue-next'
 import SectionHeading from './SectionHeading.vue'
+import Reveal from './Reveal.vue'
 import { whatsappUrl, DIRECT_MESSAGE } from '../lib/whatsapp.js'
 
 const datos = [
@@ -13,25 +14,27 @@ const datos = [
 
 <template>
   <section class="px-2 pb-2 sm:px-4 sm:pb-4">
-    <div class="relative isolate flex min-h-[calc(100svh-5.5rem)] flex-col overflow-hidden rounded-xl bg-moss text-paper">
+    <div class="relative isolate flex min-h-[calc(100svh-6.5rem)] flex-col overflow-hidden rounded-xl bg-moss text-paper">
       <img
         :src="asset('images/hero.jpg')"
         alt=""
         fetchpriority="high"
-        class="absolute inset-0 -z-10 size-full object-cover"
+        class="hero-foto absolute inset-0 -z-10 size-full object-cover"
       />
       <div class="absolute inset-0 -z-10 bg-linear-to-t from-moss via-moss/75 to-moss/45" aria-hidden="true"></div>
 
       <div class="mx-auto flex w-full max-w-7xl flex-1 flex-col justify-end px-4 pt-20 pb-5 sm:px-8 sm:pb-8">
 
         <div class="grid gap-6 md:grid-cols-[1fr_minmax(0,18rem)] md:items-end md:gap-12">
-          <SectionHeading
-            title="Tu equipo merece un lugar distinto"
-            emphasis="distinto"
-            :level="1"
-            tone="dark"
-          />
-          <div class="md:pb-2">
+          <Reveal :delay="0.1">
+            <SectionHeading
+              title="Tu equipo merece un lugar distinto"
+              emphasis="distinto"
+              :level="1"
+              tone="dark"
+            />
+          </Reveal>
+          <Reveal class="md:pb-2" :delay="0.2">
             <p class="text-pretty text-base leading-relaxed text-paper/85">
               Quincho privado en Coyhaique para celebrar con tu equipo, con parrilla interior y cocina equipada.
             </p>
@@ -44,11 +47,12 @@ const datos = [
               Escríbenos por WhatsApp
               <ArrowUpRight :size="18" :stroke-width="1.5" aria-hidden="true" />
             </a>
-          </div>
+          </Reveal>
         </div>
 
-        <div class="mt-7 grid grid-cols-3 border-t border-paper/20 pt-5 md:mt-10 md:grid-cols-[1fr_1fr_1fr_auto] md:items-center md:pt-6">
-          <dl class="contents">
+        <!-- El botón queda fuera de la animación: siempre visible desde el inicio. -->
+        <div class="mt-7 grid gap-5 border-t border-paper/20 pt-5 md:mt-10 md:grid-cols-[1fr_auto] md:items-center md:gap-8 md:pt-6">
+          <Reveal as="dl" class="grid grid-cols-3" :delay="0.3">
             <div
               v-for="(d, i) in datos"
               :key="d.label"
@@ -58,10 +62,10 @@ const datos = [
               <dt class="text-[0.6875rem] font-medium uppercase tracking-[0.12em] text-paper/65">{{ d.label }}</dt>
               <dd class="mt-1 text-[0.8125rem] font-semibold leading-snug sm:text-base">{{ d.value }}</dd>
             </div>
-          </dl>
+          </Reveal>
           <a
             href="#cotiza"
-            class="col-span-3 mt-5 inline-flex min-h-12 items-center justify-center rounded-md bg-paper px-7 text-sm font-semibold text-forest transition-colors duration-200 hover:bg-mist md:col-span-1 md:mt-0"
+            class="inline-flex min-h-12 items-center justify-center rounded-md bg-paper px-7 text-sm font-semibold text-forest transition-colors duration-200 hover:bg-mist"
           >
             Cotizar evento
           </a>
@@ -70,3 +74,19 @@ const datos = [
     </div>
   </section>
 </template>
+
+<style>
+/* La foto se ve desde el primer momento (es el elemento que mide la velocidad de carga):
+   solo se acerca levemente, sin fundido. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-foto {
+    animation: hero-acercar 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes hero-acercar {
+  from {
+    transform: scale(1.04);
+  }
+}
+</style>

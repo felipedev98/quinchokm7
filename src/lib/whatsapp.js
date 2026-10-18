@@ -1,4 +1,5 @@
 import { WHATSAPP_NUMBER } from '../config.js'
+import { formatLongDate } from './dates.js'
 
 export const EVENT_TYPES = ['Fin de año', 'Aniversario', 'Despedida', 'Reunión o capacitación', 'Otro']
 
@@ -12,8 +13,6 @@ const EVENT_PHRASES = {
   Otro: 'un evento',
 }
 
-const dateFormat = new Intl.DateTimeFormat('es-CL', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' })
-
 function toInt(value) {
   if (value === '' || value === null || value === undefined) return NaN
   const n = Number(value)
@@ -23,13 +22,6 @@ function toInt(value) {
 function inRange(value, min, max) {
   const n = toInt(value)
   return n >= min && n <= max
-}
-
-// 'YYYY-MM-DD' -> 'viernes 11 de diciembre'. Fecha y formato van ambos en UTC
-// para que la zona horaria del visitante no corra el día.
-function longDate(iso) {
-  const [y, m, d] = iso.split('-').map(Number)
-  return dateFormat.format(new Date(Date.UTC(y, m - 1, d))).replace(',', '')
 }
 
 function plural(n, singular, pluralForm) {
@@ -68,7 +60,7 @@ export function buildQuoteMessage(quote, { promoActive }) {
 
   const parts = [
     greeting(nombre, lugar),
-    `Quiero cotizar ${EVENT_PHRASES[quote.tipo]} para ${plural(personas, 'persona', 'personas')} el ${longDate(quote.fecha)}.`,
+    `Quiero cotizar ${EVENT_PHRASES[quote.tipo]} para ${plural(personas, 'persona', 'personas')} el ${formatLongDate(quote.fecha)}.`,
     '¿Qué horarios tienen disponibles?',
   ]
   if (quote.documento === 'factura') parts.push('Necesito factura.')
