@@ -7,6 +7,7 @@ import SiteHeader from './components/SiteHeader.vue'
 import HeroSection from './components/HeroSection.vue'
 import UsosSection from './components/UsosSection.vue'
 import EquipamientoSection from './components/EquipamientoSection.vue'
+import ModalidadesSection from './components/ModalidadesSection.vue'
 import GaleriaSection from './components/GaleriaSection.vue'
 import TestimoniosSection from './components/TestimoniosSection.vue'
 import CotizaSection from './components/CotizaSection.vue'
@@ -25,10 +26,11 @@ onMounted(precargarAlEstarOcioso)
         <HeroSection />
         <UsosSection />
         <EquipamientoSection />
+        <ModalidadesSection />
         <GaleriaSection />
         <TestimoniosSection v-if="TESTIMONIOS_VISIBLES" />
-        <CotizaSection :promo-active="PROMO_ACTIVE" />
         <UbicacionSection />
+        <CotizaSection :promo-active="PROMO_ACTIVE" />
       </main>
       <SiteFooter />
     </div>

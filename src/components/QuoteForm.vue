@@ -1,9 +1,11 @@
 <script setup>
-import { reactive, ref, computed, nextTick, defineAsyncComponent } from 'vue'
-import { MessageCircle, CircleAlert, ChevronDown } from 'lucide-vue-next'
+import { reactive, ref, computed, nextTick, watch, defineAsyncComponent } from 'vue'
+import { MessageCircle, CircleAlert, ChevronDown, House, UtensilsCrossed, CircleCheck, Pencil } from 'lucide-vue-next'
 import { PROMO_TEXT } from '../config.js'
 import DateFieldPlaceholder from './DateFieldPlaceholder.vue'
 import { cargarDateField } from '../lib/lazy.js'
+import { MODALIDADES, modalidadElegida } from '../lib/modalidad.js'
+import { formatLongDate } from '../lib/dates.js'
 
 const DateField = defineAsyncComponent({ loader: cargarDateField, loadingComponent: DateFieldPlaceholder, delay: 0 })
 import { EVENT_TYPES, validateQuote, buildQuoteMessage, whatsappUrl, openWhatsApp, todayIso } from '../lib/whatsapp.js'
@@ -13,6 +15,7 @@ const props = defineProps({
 })
 
 const quote = reactive({
+  modalidad: modalidadElegida.value,
   tipo: '',
   personas: '',
   fecha: '',
@@ -21,15 +24,29 @@ const quote = reactive({
   documento: '',
 })
 
+// Si se eligió una modalidad desde la sección "Dos formas de arrendar", llega ya marcada.
+watch(modalidadElegida, (valor) => { if (valor) quote.modalidad = valor })
+
+const iconos = { espacio: House, alimentacion: UtensilsCrossed }
+
+const documentos = [
+  { valor: 'boleta', texto: 'Boleta' },
+  { valor: 'factura', texto: 'Factura' },
+]
+
 const attempted = ref(false)
 const formEl = ref(null)
+const panelEl = ref(null)
+const tituloEl = ref(null)
+// Enlace del último mensaje armado. Con él se muestra la confirmación en vez del formulario.
+const enlace = ref('')
 const today = todayIso()
 
 // Los errores aparecen recién al intentar enviar, y desde ahí se recalculan
 // mientras la persona corrige.
 const errors = computed(() => (attempted.value ? validateQuote(quote, { today }) : {}))
 
-const FIELD_ORDER = ['tipo', 'personas', 'fecha', 'nombre', 'documento']
+const FIELD_ORDER = ['modalidad', 'tipo', 'personas', 'fecha', 'nombre', 'documento']
 
 async function onSubmit() {
   attempted.value = true
@@ -39,7 +56,52 @@ async function onSubmit() {
     formEl.value?.querySelector(`[name="${first}"]`)?.focus()
     return
   }
-  openWhatsApp(whatsappUrl(buildQuoteMessage(quote, { promoActive: props.promoActive })))
+  enlace.value = whatsappUrl(buildQuoteMessage(quote, { promoActive: props.promoActive }))
+  openWhatsApp(enlace.value)
+}
+
+function enfocarFecha() {
+  formEl.value?.querySelector('#fecha')?.focus()
+}
+
+// Resumen de lo que se mandó, para la confirmación.
+const resumen = computed(() => {
+  const filas = [
+    ['Modalidad', MODALIDADES.find((m) => m.valor === quote.modalidad)?.titulo],
+    ['Evento', `${quote.tipo}, ${quote.personas} ${Number(quote.personas) === 1 ? 'persona' : 'personas'}`],
+    ['Fecha', quote.fecha && formatLongDate(quote.fecha)],
+    ['Documento', documentos.find((d) => d.valor === quote.documento)?.texto],
+  ]
+  return filas.filter(([, valor]) => valor)
+})
+
+// Al aparecer la confirmación: el foco pasa a su título y, como el formulario era más alto,
+// la página se acomoda para mostrar la tarjeta completa bajo la barra superior.
+function alMostrarConfirmacion() {
+  tituloEl.value?.focus({ preventScroll: true })
+  panelEl.value?.parentElement?.scrollIntoView({ block: 'nearest' })
+}
+
+// Campo que recibe el foco al volver al formulario (se monta recién terminado el fundido).
+let enfocarAlVolver = ''
+
+function alEntrar(el) {
+  if (el === panelEl.value) alMostrarConfirmacion()
+  else formEl.value?.querySelector(enfocarAlVolver)?.focus({ preventScroll: true })
+}
+
+// Vuelve al formulario con los datos tal cual, para corregir algo.
+function editar() {
+  enfocarAlVolver = 'button[type="submit"]'
+  enlace.value = ''
+}
+
+function nuevaCotizacion() {
+  Object.assign(quote, { modalidad: '', tipo: '', personas: '', fecha: '', nombre: '', lugar: '', documento: '' })
+  modalidadElegida.value = ''
+  attempted.value = false
+  enfocarAlVolver = '[name="modalidad"]'
+  enlace.value = ''
 }
 
 const control =
@@ -51,9 +113,84 @@ const errorText = 'mt-2 flex items-center gap-1.5 text-sm font-medium'
 </script>
 
 <template>
-  <form ref="formEl" novalidate @submit.prevent="onSubmit">
+  <Transition name="cambio" mode="out-in" @after-enter="alEntrar">
+  <div v-if="enlace" key="listo" ref="panelEl" class="flex flex-1 flex-col">
+    <p :class="groupTitle" class="flex items-center gap-2">
+      <CircleCheck :size="18" :stroke-width="2" aria-hidden="true" />Mensaje listo
+    </p>
+    <h3 ref="tituloEl" tabindex="-1" class="mt-4 text-3xl text-balance focus:outline-none">Revísalo y envíalo en WhatsApp</h3>
+    <p class="mt-3 max-w-md leading-relaxed text-ink/70">
+      Te abrimos WhatsApp con tu cotización escrita. Al enviarla, los dueños te responden con horarios y precio.
+    </p>
+
+    <div class="mt-7 rounded-md border border-sage">
+      <div class="flex items-center justify-between gap-4 border-b border-sage py-1 pr-1 pl-4">
+        <p class="text-sm font-semibold">Tu cotización</p>
+        <button
+          type="button"
+          class="inline-flex h-10 items-center gap-1.5 rounded-md px-3 text-sm font-semibold text-forest transition-colors duration-150 hover:bg-mist/60"
+          @click="editar"
+        >
+          <Pencil :size="16" :stroke-width="1.5" aria-hidden="true" />Editar
+        </button>
+      </div>
+      <dl class="divide-y divide-sage/60 px-4 text-sm">
+        <div v-for="[campo, valor] in resumen" :key="campo" class="flex justify-between gap-4 py-3">
+          <dt class="text-ink/70">{{ campo }}</dt>
+          <dd class="text-right font-medium first-letter:uppercase">{{ valor }}</dd>
+        </div>
+      </dl>
+    </div>
+
+    <a
+      :href="enlace"
+      target="_blank"
+      rel="noopener"
+      class="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 rounded-md bg-forest px-7 text-sm font-semibold text-paper transition-colors duration-200 hover:bg-forest/90"
+    >
+      <MessageCircle :size="20" :stroke-width="1.5" aria-hidden="true" />
+      Abrir WhatsApp otra vez
+    </a>
+
+    <p class="mt-auto pt-8 text-center text-sm text-ink/70">
+      ¿Otro evento?
+      <button type="button" class="font-semibold text-forest underline underline-offset-4 hover:text-forest/80" @click="nuevaCotizacion">
+        Haz una nueva cotización
+      </button>
+    </p>
+  </div>
+  <form v-else key="form" ref="formEl" novalidate @submit.prevent="onSubmit">
     <fieldset>
       <legend :class="groupTitle">Tu evento</legend>
+
+      <fieldset
+        class="mt-5"
+        :aria-describedby="errors.modalidad ? 'error-modalidad' : undefined"
+      >
+        <legend :class="label">¿Cómo quieres arrendar?</legend>
+        <div class="mt-2 grid gap-3 sm:grid-cols-2">
+          <label
+            v-for="m in MODALIDADES"
+            :key="m.valor"
+            class="relative flex h-12 cursor-pointer items-center gap-3 rounded-md border bg-paper px-4 transition-colors duration-150 hover:border-forest/60 has-checked:border-forest has-checked:bg-mist/60 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-forest"
+            :class="errors.modalidad ? 'border-2 border-ink' : 'border-sage'"
+          >
+            <input
+              v-model="quote.modalidad"
+              type="radio"
+              name="modalidad"
+              :value="m.valor"
+              class="peer sr-only"
+              :aria-invalid="errors.modalidad ? 'true' : undefined"
+            />
+            <component :is="iconos[m.valor]" :size="22" :stroke-width="1.5" class="shrink-0 text-forest" aria-hidden="true" />
+            <span class="text-sm font-semibold">{{ m.titulo }}</span>
+          </label>
+        </div>
+        <p v-if="errors.modalidad" id="error-modalidad" :class="errorText">
+          <CircleAlert :size="16" :stroke-width="2" aria-hidden="true" />{{ errors.modalidad }}
+        </p>
+      </fieldset>
 
       <div class="mt-5 grid gap-5 sm:grid-cols-2">
         <div>
@@ -63,7 +200,7 @@ const errorText = 'mt-2 flex items-center gap-1.5 text-sm font-medium'
               id="tipo"
               v-model="quote.tipo"
               name="tipo"
-              :class="[selectControl, !quote.tipo && 'text-ink/70']"
+              :class="[selectControl, 'selector', !quote.tipo && 'text-ink/70']"
               :aria-invalid="errors.tipo ? 'true' : undefined"
               :aria-describedby="errors.tipo ? 'error-tipo' : undefined"
             >
@@ -98,7 +235,8 @@ const errorText = 'mt-2 flex items-center gap-1.5 text-sm font-medium'
         </div>
 
         <div class="sm:col-span-2">
-          <label id="etiqueta-fecha" for="fecha" :class="label">Fecha</label>
+          <!-- Como en los demás campos, la etiqueta solo enfoca; el calendario se abre desde el campo. -->
+          <label id="etiqueta-fecha" for="fecha" :class="label" @click.prevent="enfocarFecha">Fecha</label>
           <DateField
             v-model="quote.fecha"
             :min="today"
@@ -137,27 +275,33 @@ const errorText = 'mt-2 flex items-center gap-1.5 text-sm font-medium'
           <label for="lugar" :class="label">Lugar de trabajo <span class="font-normal text-ink/70">(opcional)</span></label>
           <input id="lugar" v-model="quote.lugar" name="lugar" type="text" autocomplete="organization" :class="control" />
         </div>
-        <div class="sm:col-span-2">
-          <label for="documento" :class="label">Documento tributario</label>
-          <div class="relative">
-            <select
-              id="documento"
-              v-model="quote.documento"
-              name="documento"
-              :class="[selectControl, !quote.documento && 'text-ink/70']"
-              :aria-invalid="errors.documento ? 'true' : undefined"
-              :aria-describedby="errors.documento ? 'error-documento' : undefined"
+        <fieldset
+          class="sm:col-span-2"
+          :aria-describedby="errors.documento ? 'error-documento' : undefined"
+        >
+          <legend :class="label">Documento tributario</legend>
+          <div class="mt-2 grid grid-cols-2 gap-3">
+            <label
+              v-for="doc in documentos"
+              :key="doc.valor"
+              class="flex h-12 cursor-pointer items-center justify-center rounded-md border bg-paper text-sm font-semibold transition-colors duration-150 hover:border-forest/60 has-checked:border-forest has-checked:bg-mist/60 has-checked:text-forest has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-forest"
+              :class="errors.documento ? 'border-2 border-ink' : 'border-sage'"
             >
-              <option value="" disabled>Selecciona</option>
-              <option value="boleta" class="text-ink">Boleta</option>
-              <option value="factura" class="text-ink">Factura</option>
-            </select>
-            <ChevronDown :size="18" :stroke-width="1.5" class="pointer-events-none absolute right-4 bottom-3.75" aria-hidden="true" />
+              <input
+                v-model="quote.documento"
+                type="radio"
+                name="documento"
+                :value="doc.valor"
+                class="sr-only"
+                :aria-invalid="errors.documento ? 'true' : undefined"
+              />
+              {{ doc.texto }}
+            </label>
           </div>
           <p v-if="errors.documento" id="error-documento" :class="errorText">
             <CircleAlert :size="16" :stroke-width="2" aria-hidden="true" />{{ errors.documento }}
           </p>
-        </div>
+        </fieldset>
       </div>
     </fieldset>
 
@@ -174,4 +318,22 @@ const errorText = 'mt-2 flex items-center gap-1.5 text-sm font-medium'
       </button>
     </div>
   </form>
+  </Transition>
 </template>
+
+<style scoped>
+.cambio-enter-active,
+.cambio-leave-active {
+  transition: opacity 200ms ease;
+}
+.cambio-enter-from,
+.cambio-leave-to {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cambio-enter-active,
+  .cambio-leave-active {
+    transition: none;
+  }
+}
+</style>

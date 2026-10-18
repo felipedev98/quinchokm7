@@ -16,6 +16,7 @@ El objetivo del sitio es que puedan conocer el espacio y pedir una cotización e
 - Parrilla interior y cocina equipada
 - Refrigeración, calefacción, wifi, TV y sonido
 - Estacionamiento dentro del recinto
+- Arriendo solo del espacio o con servicio de alimentación (pago único que incluye salón, comida y aseo)
 - Arriendo por hora o por día, con boleta o factura
 
 ## Secciones del sitio

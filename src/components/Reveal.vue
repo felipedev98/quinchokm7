@@ -13,6 +13,11 @@ const reduce = usePreferredReducedMotion().value === 'reduce'
 const visible = ref(reduce)
 const el = ref(null)
 
+function aLaVistaAlCargar() {
+  const r = el.value?.getBoundingClientRect?.()
+  return !!r && r.height > 0 && r.top < window.innerHeight && r.bottom > 0
+}
+
 onMounted(() => {
   if (visible.value) return
   const { stop } = useIntersectionObserver(
@@ -22,8 +27,9 @@ onMounted(() => {
       visible.value = true
       stop()
     },
-    // Se activa cuando el bloque ya subió un poco en la pantalla, para que se alcance a ver.
-    { threshold: 0.1, rootMargin: '0px 0px -12% 0px' },
+    // Al bajar, se activa cuando el bloque ya subió un poco en la pantalla, para que se alcance
+    // a ver. Lo que ya está a la vista al cargar (portada, o al entrar con un ancla) no espera.
+    { threshold: 0.1, rootMargin: aLaVistaAlCargar() ? '0px' : '0px 0px -12% 0px' },
   )
 })
 

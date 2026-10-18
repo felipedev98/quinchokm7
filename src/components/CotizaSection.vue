@@ -10,14 +10,14 @@ defineProps({
 })
 
 const pasos = [
-  { title: 'Cuéntanos tu evento', text: 'Tipo, cantidad de personas y fecha.' },
+  { title: 'Cuéntanos tu evento', text: 'Modalidad, tipo de evento, personas y fecha.' },
   { title: 'Revisa horarios y precio', text: 'Te responden los dueños por WhatsApp.' },
   { title: 'Reserva tu fecha', text: 'Emitimos boleta o factura.' },
 ]
 </script>
 
 <template>
-  <section id="cotiza" class="bg-paper px-2 sm:px-4">
+  <section id="cotiza" class="bg-paper px-2 pb-12 sm:px-4 md:pb-16">
     <div class="rounded-xl bg-moss py-16 text-paper md:py-24">
       <div class="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:px-8 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
         <Reveal>
@@ -50,7 +50,7 @@ const pasos = [
           </a>
         </Reveal>
 
-        <Reveal class="rounded-lg bg-paper p-5 text-ink sm:p-8" :delay="0.15">
+        <Reveal class="flex flex-col rounded-lg bg-paper p-5 text-ink sm:p-8" :delay="0.15">
           <QuoteForm :promo-active="promoActive" />
         </Reveal>
       </div>

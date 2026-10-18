@@ -1,9 +1,9 @@
 import { Flame, CookingPot, Refrigerator, Sofa, Tv, Heater, Toilet, SquareParking } from 'lucide-vue-next'
 
 export const USOS = [
-  { title: 'Fin de año', text: 'Asado o cena para todos, sin compartir el espacio.' },
+  { title: 'Fin de año', text: 'Asado o cena para todo el equipo' },
   { title: 'Aniversarios y despedidas', text: 'Por unas horas o el día completo.' },
-  { title: 'Reuniones y capacitaciones', text: 'Wifi, TV y enchufes para trabajar antes de celebrar.' },
+  { title: 'Reuniones y capacitaciones', text: 'WiFi y TV para trabajar antes de celebrar.' },
 ]
 
 // Textos de largo parejo (24 a 28 caracteres) para que entren en una línea
@@ -19,15 +19,17 @@ export const EQUIPAMIENTO = [
   { icon: SquareParking, title: 'Estacionamiento', text: 'Dentro del mismo recinto.' },
 ]
 
+// Fotos del lugar (public/images/quincho). Solo texto alternativo: la galería no lleva leyendas.
 export const GALERIA = [
-  { src: '/images/galeria/01.jpg', label: 'Mesas armadas', alt: 'Mesas del quincho armadas para un grupo' },
-  { src: '/images/galeria/02.jpg', label: 'Cocina', alt: 'Cocina equipada del quincho' },
-  { src: '/images/galeria/03.jpg', label: 'Living con TV', alt: 'Zona de sillones con TV' },
-  { src: '/images/galeria/04.jpg', label: 'Parrilla interior', alt: 'Parrilla interior del quincho' },
-  { src: '/images/galeria/05.jpg', label: 'Celebraciones', alt: 'Grupo de trabajo conversando en el quincho' },
-  { src: '/images/galeria/06.jpg', label: 'Madera y ventanales', alt: 'Detalle de madera y ventanales del quincho' },
-  { src: '/images/galeria/07.jpg', label: 'Estacionamiento', alt: 'Acceso y estacionamiento dentro del recinto' },
-  { src: '/images/galeria/08.jpg', label: 'Exterior', alt: 'Exterior del quincho con el paisaje alrededor' },
+  { src: '/images/quincho/quincho-km7-salon-principal-coyhaique.webp', alt: 'Salón principal del QuinchoKM7 con mesas, barra, sillones y ventanales' },
+  { src: '/images/quincho/quincho-km7-salon-con-sillones-y-plantas.webp', alt: 'Mesas puestas y zona de sillones junto a los ventanales del quincho' },
+  { src: '/images/quincho/quincho-km7-comedor-con-ventanal.webp', alt: 'Comedor con mesas de mantel a cuadros y un gran ventanal hacia los árboles' },
+  { src: '/images/quincho/quincho-km7-mesas-y-repisas-de-madera.webp', alt: 'Mesas armadas para un grupo en el salón de madera' },
+  { src: '/images/quincho/quincho-km7-mesa-junto-al-ventanal.webp', alt: 'Mesa para dos junto al ventanal con vista al jardín' },
+  { src: '/images/quincho/quincho-km7-mesas-con-luz-natural.webp', alt: 'Mesas iluminadas con luz natural junto al ventanal' },
+  { src: '/images/quincho/quincho-km7-salon-con-tv-y-barra.webp', alt: 'Salón con TV, barra con taburetes y mesas para el grupo' },
+  { src: '/images/quincho/quincho-km7-techo-de-vigas-de-madera.webp', alt: 'Salón con techo alto de vigas de madera y mesas armadas' },
+  { src: '/images/quincho/quincho-km7-salon-amplio-con-barra.webp', alt: 'Vista amplia del salón con barra, mesas y ventanales' },
 ]
 
 // Marcadores: reemplazar por testimonios reales y activar TESTIMONIOS_VISIBLES en src/config.js.

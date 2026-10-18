@@ -42,3 +42,72 @@
     outline: none;
   }
 }
+
+/* Select con estilo propio (appearance: base-select). En navegadores sin soporte
+   (Firefox, versiones antiguas) se ve el select del sistema, igual que antes. */
+@supports (appearance: base-select) {
+  select.selector,
+  select.selector::picker(select) {
+    appearance: base-select;
+  }
+
+  /* Texto centrado verticalmente, igual que los demás campos. */
+  select.selector {
+    display: flex;
+    align-items: center;
+  }
+
+  /* La flecha la pone el componente (ChevronDown), igual en ambos casos. */
+  select.selector::picker-icon {
+    display: none;
+  }
+
+  select.selector::picker(select) {
+    /* Se abre hacia abajo; solo sube si no cabe. */
+    position-area: bottom span-right;
+    position-try-fallbacks: flip-block;
+    position-try-order: normal;
+    margin-block: 6px;
+    padding: 4px;
+    border: 1px solid var(--color-sage);
+    border-radius: 8px;
+    background: var(--color-paper);
+    box-shadow: 0 12px 32px -16px rgb(42 46 40 / 0.4);
+    font-family: var(--font-sans);
+  }
+
+  select.selector option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 6px;
+    color: var(--color-ink);
+    font-size: 0.9375rem;
+    cursor: pointer;
+    transition: background-color 150ms;
+  }
+
+  /* La opción "Selecciona" no se muestra en la lista. */
+  select.selector option[value=''] {
+    display: none;
+  }
+
+  select.selector option:hover,
+  select.selector option:focus-visible {
+    background: var(--color-mist);
+    outline: none;
+  }
+
+  select.selector option:checked {
+    color: var(--color-forest);
+    font-weight: 600;
+  }
+
+  select.selector option::checkmark {
+    order: 1;
+    margin-left: auto;
+    color: var(--color-forest);
+  }
+}

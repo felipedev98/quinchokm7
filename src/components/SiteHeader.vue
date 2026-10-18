@@ -20,6 +20,7 @@ const MobileMenu = defineAsyncComponent(() =>
 const links = [
   { href: '#celebraciones', label: 'Celebraciones' },
   { href: '#equipamiento', label: 'Equipamiento' },
+  { href: '#arriendo', label: 'Arriendo' },
   { href: '#espacio', label: 'Espacio' },
   { href: '#ubicacion', label: 'Ubicación' },
 ]

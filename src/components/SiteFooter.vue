@@ -5,7 +5,7 @@ import { whatsappUrl, DIRECT_MESSAGE } from '../lib/whatsapp.js'
 </script>
 
 <template>
-  <footer class="overflow-hidden border-t border-sage bg-paper">
+  <footer class="overflow-hidden bg-paper">
     <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
       <div class="grid gap-8 text-sm sm:grid-cols-3">
         <p class="text-ink/70">Eventos corporativos y privados</p>

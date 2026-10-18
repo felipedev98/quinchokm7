@@ -18,7 +18,7 @@ import { osmEmbedUrl, directionsUrl } from '../lib/maps.js'
           <p class="text-pretty text-lg leading-relaxed">
             Sector tranquilo con estacionamiento dentro del recinto.
           </p>
-          <p class="mt-3 text-pretty leading-relaxed text-ink/70">KM 7, Coyhaique. El mapa muestra el punto exacto.</p>
+          <p class="mt-3 text-pretty leading-relaxed text-ink/70">Camino Coyhaique Alto KM 7, Parcelas Entre Vientos, parcela C-4.</p>
           <a
             :href="directionsUrl(COORDS)"
             target="_blank"
@@ -40,8 +40,8 @@ import { osmEmbedUrl, directionsUrl } from '../lib/maps.js'
           class="aspect-square w-full rounded-lg border border-sage sm:aspect-[4/3] md:aspect-auto md:h-full md:min-h-96"
         ></iframe>
         <img
-          :src="asset('images/espacio-exterior.jpg')"
-          alt="Exterior del quincho y su entorno"
+          :src="asset('images/quincho/quincho-km7-exterior-coyhaique.webp')"
+          alt="Exterior del QuinchoKM7 rodeado de álamos, con la cordillera nevada de fondo"
           loading="lazy"
           class="hidden aspect-[4/5] w-full rounded-lg object-cover md:block"
         />

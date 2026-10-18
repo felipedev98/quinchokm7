@@ -7,7 +7,7 @@ import { whatsappUrl, DIRECT_MESSAGE } from '../lib/whatsapp.js'
 
 const datos = [
   { label: 'Capacidad', value: 'Hasta 35 personas' },
-  { label: 'Arriendo', value: 'Por hora o por día' },
+  { label: 'Arriendo', value: 'Con o sin comida' },
   { label: 'Ubicación', value: 'A 10 min del centro' },
 ]
 </script>
@@ -16,7 +16,7 @@ const datos = [
   <section class="px-2 pb-2 sm:px-4 sm:pb-4">
     <div class="relative isolate flex min-h-[calc(100svh-6.5rem)] flex-col overflow-hidden rounded-xl bg-moss text-paper">
       <img
-        :src="asset('images/hero.jpg')"
+        :src="asset('images/quincho/quincho-km7-salon-principal-coyhaique.webp')"
         alt=""
         fetchpriority="high"
         class="hero-foto absolute inset-0 -z-10 size-full object-cover"
@@ -36,7 +36,7 @@ const datos = [
           </Reveal>
           <Reveal class="md:pb-2" :delay="0.2">
             <p class="text-pretty text-base leading-relaxed text-paper/85">
-              Quincho privado en Coyhaique para celebrar con tu equipo, con parrilla interior y cocina equipada.
+              Quincho privado en Coyhaique para celebrar con tu equipo. Arriéndalo solo o con servicio de alimentación.
             </p>
             <a
               :href="whatsappUrl(DIRECT_MESSAGE)"

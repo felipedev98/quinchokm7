@@ -1,5 +1,6 @@
 import { WHATSAPP_NUMBER } from '../config.js'
 import { formatLongDate } from './dates.js'
+import { MODALIDADES } from './modalidad.js'
 
 export const EVENT_TYPES = ['Fin de año', 'Aniversario', 'Despedida', 'Reunión o capacitación', 'Otro']
 
@@ -44,6 +45,7 @@ export function todayIso() {
 
 export function validateQuote(quote, { today = todayIso() } = {}) {
   const errors = {}
+  if (!MODALIDADES.some((m) => m.valor === quote.modalidad)) errors.modalidad = 'Elige cómo quieres arrendar.'
   if (!EVENT_TYPES.includes(quote.tipo)) errors.tipo = 'Elige el tipo de evento.'
   if (!inRange(quote.personas, 1, 35)) errors.personas = 'Indica entre 1 y 35 personas.'
   if (!ISO_DATE.test(quote.fecha ?? '')) errors.fecha = 'Elige la fecha del evento.'
@@ -61,8 +63,10 @@ export function buildQuoteMessage(quote, { promoActive }) {
   const parts = [
     greeting(nombre, lugar),
     `Quiero cotizar ${EVENT_PHRASES[quote.tipo]} para ${plural(personas, 'persona', 'personas')} el ${formatLongDate(quote.fecha)}.`,
-    '¿Qué horarios tienen disponibles?',
   ]
+  const modalidad = MODALIDADES.find((m) => m.valor === quote.modalidad)
+  if (modalidad) parts.push(modalidad.mensaje)
+  parts.push('¿Qué horarios tienen disponibles?')
   if (quote.documento === 'factura') parts.push('Necesito factura.')
   if (quote.documento === 'boleta') parts.push('Necesito boleta.')
   if (promoActive) parts.push('Vi el 15% de lanzamiento.')

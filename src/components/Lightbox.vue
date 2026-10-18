@@ -11,8 +11,8 @@ import {
   DialogClose,
 } from 'reka-ui'
 import { X, ArrowLeft, ArrowRight } from 'lucide-vue-next'
-import { asset } from '../lib/asset.js'
-import { swipeIntent, flipCubrir, recorteCss } from '../lib/gestures.js'
+import { flipCubrir, recorteCss } from '../lib/gestures.js'
+import LightboxSlider from './LightboxSlider.vue'
 
 const props = defineProps({
   fotos: { type: Array, required: true },
@@ -35,14 +35,23 @@ const abierta = computed(() => actual.value !== null)
 const foto = computed(() => (abierta.value ? props.fotos[actual.value] : null))
 const total = computed(() => props.fotos.length)
 
+const slider = ref(null)
+
+function fijar(i) {
+  actual.value = i
+  emit('update:index', i)
+}
+
+// Flechas y teclado: el carrusel anima el paso; la posición se actualiza al instante
+// para que varios toques seguidos avancen desde la última.
 function ir(paso) {
-  actual.value = (actual.value + paso + total.value) % total.value
-  emit('update:index', actual.value)
+  fijar((actual.value + paso + total.value) % total.value)
+  if (paso > 0) slider.value?.siguiente()
+  else slider.value?.anterior()
 }
 
 // La foto crece desde su miniatura y, al cerrar, vuelve a la miniatura de la foto que
 // se está viendo (técnica FLIP con recorte, animando el elemento con animate()).
-const imagen = ref(null)
 const cerrando = ref(false)
 // Oculta (visibility) hasta aplicar la posición inicial; opacity no sirve porque motion la fija en línea.
 const lista = ref(props.reduceMotion)
@@ -52,7 +61,7 @@ const RADIO = 8
 const SIN_RECORTE = recorteCss({ arriba: 0, derecha: 0, abajo: 0, izquierda: 0 }, RADIO)
 
 const valido = (r) => r && r.width > 0 && r.height > 0
-const elemento = () => imagen.value?.$el ?? imagen.value
+const elemento = () => slider.value?.imagenActual()
 const cuadro = () => new Promise((r) => requestAnimationFrame(() => r()))
 
 // Transformación que tiene la foto ahora (incluye el arrastre al cerrar deslizando).
@@ -102,7 +111,10 @@ async function cerrar() {
   cerrando.value = true
   const i = actual.value
   props.antesDeCerrar(i)
+  // Embla dibuja el salto de la galería en el cuadro siguiente: se espera antes de medir la miniatura.
   await nextTick()
+  await cuadro()
+  await cuadro()
   const el = elemento()
   const destino = props.rectDe(i)
   if (!props.reduceMotion && el && valido(destino)) {
@@ -121,12 +133,6 @@ function alTeclear(evento) {
   if (evento.key === 'ArrowLeft') ir(-1)
 }
 
-function alSoltar(_evento, info) {
-  const intencion = swipeIntent(info.offset.x, info.offset.y, info.velocity.x, info.velocity.y)
-  if (intencion === 'next') ir(1)
-  if (intencion === 'prev') ir(-1)
-  if (intencion === 'close') cerrar()
-}
 
 const flecha =
   'absolute hidden size-12 items-center justify-center rounded-md border border-paper/30 text-paper transition duration-150 hover:bg-paper/10 sm:inline-flex'
@@ -155,7 +161,7 @@ const flecha =
           @close-auto-focus.prevent
         >
           <div class="fixed inset-0 z-50 flex flex-col text-paper outline-none" tabindex="-1">
-            <DialogTitle class="sr-only">{{ foto.label }}</DialogTitle>
+            <DialogTitle class="sr-only">{{ foto.alt }}</DialogTitle>
             <DialogDescription class="sr-only">Foto {{ actual + 1 }} de {{ total }}. Usa las flechas para cambiar de foto.</DialogDescription>
 
             <div class="flex h-18 shrink-0 items-center justify-between px-4 transition-opacity duration-200 sm:px-6" :class="{ 'opacity-0': cerrando }">
@@ -168,24 +174,15 @@ const flecha =
               </DialogClose>
             </div>
 
-            <div class="relative flex min-h-0 flex-1 items-center justify-center px-4 sm:px-20" @click.self="cerrar">
-              <motion.img
-                :key="foto.src"
-                :src="asset(foto.src)"
-                :alt="foto.alt"
-                ref="imagen"
-                class="max-h-full w-auto max-w-full touch-none object-contain select-none"
+            <div class="relative flex min-h-0 flex-1 items-center justify-center">
+              <LightboxSlider
+                ref="slider"
+                :fotos="fotos"
+                :inicio="actual"
+                :reduce-motion="reduceMotion"
                 :class="{ invisible: !lista }"
-                style="clip-path: inset(0px round 8px)"
-                draggable="false"
-                drag
-                :drag-snap-to-origin="true"
-                :drag-elastic="0.4"
-                :initial="reduceMotion ? { opacity: 0 } : false"
-                :animate="{ opacity: 1 }"
-                :exit="reduceMotion ? { opacity: 0 } : undefined"
-                :transition="{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }"
-                @drag-end="alSoltar"
+                @cambio="fijar"
+                @cerrar="cerrar"
               />
               <button type="button" aria-label="Foto anterior" :class="[flecha, 'left-6', { 'opacity-0': cerrando }]" @click="ir(-1)">
                 <ArrowLeft :size="20" :stroke-width="1.5" aria-hidden="true" />
@@ -196,8 +193,7 @@ const flecha =
             </div>
 
             <div class="shrink-0 px-4 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] text-center transition-opacity duration-200 sm:px-6" :class="{ 'opacity-0': cerrando }">
-              <p class="text-base font-medium">{{ foto.label }}</p>
-              <p class="mt-1 text-xs text-paper/60 sm:hidden">Desliza para ver más</p>
+              <p class="text-xs text-paper/60 sm:hidden">Desliza para ver más</p>
             </div>
           </div>
         </DialogContent>

@@ -1,8 +1,8 @@
 <script setup>
-import { ref, nextTick, onBeforeUnmount, defineAsyncComponent } from 'vue'
+import { ref, watch, nextTick, onBeforeUnmount, defineAsyncComponent } from 'vue'
 import emblaCarouselVue from 'embla-carousel-vue'
 import AutoScroll from 'embla-carousel-auto-scroll'
-import { usePreferredReducedMotion, watchOnce } from '@vueuse/core'
+import { usePreferredReducedMotion } from '@vueuse/core'
 import { Pause, Play } from 'lucide-vue-next'
 import SectionHeading from './SectionHeading.vue'
 import Reveal from './Reveal.vue'
@@ -20,10 +20,7 @@ import { asset } from '../lib/asset.js'
 import { trackOverlay } from '../lib/overlays.js'
 import { GALERIA } from '../content.js'
 
-const fotos = [
-  { src: '/images/espacio-salon.jpg', label: 'Salón', alt: 'Salón del quincho armado con mesas para un grupo' },
-  ...GALERIA,
-]
+const fotos = GALERIA
 
 // Con movimiento reducido no avanza sola; deslizar sigue funcionando.
 const reduceMotion = usePreferredReducedMotion().value === 'reduce'
@@ -64,9 +61,21 @@ function alternarPausa() {
   else reanudar()
 }
 
-// Tras arrastrar con el dedo o el mouse, se reanuda unos segundos después.
-watchOnce(emblaApi, (api) => {
-  api?.on('pointerUp', () => reanudar(REANUDAR_TRAS))
+// Al tocar la galería, Embla la detiene. Al soltar: si el dedo deslizó las fotos, retoma
+// unos segundos después; si no (un toque, o bajar la página con el dedo encima), de inmediato.
+// Se registra cuando Embla ya existe (al cargar todavía no está).
+let posicionAlTocar = 0
+const posicion = (api) => api.internalEngine().location.get()
+
+let registrado = false
+watch(emblaApi, (api) => {
+  if (!api || registrado) return
+  registrado = true
+  api.on('pointerDown', () => { posicionAlTocar = posicion(api) })
+  api.on('pointerUp', () => {
+    const deslizo = Math.abs(posicion(api) - posicionAlTocar) > 4
+    reanudar(deslizo ? REANUDAR_TRAS : 0)
+  })
 }, { immediate: true })
 
 // Foto ampliada
@@ -143,7 +152,7 @@ const boton =
 </script>
 
 <template>
-  <section id="espacio" class="overflow-hidden bg-paper py-16 md:py-28">
+  <section id="espacio" class="overflow-hidden bg-mist py-16 md:py-28">
     <Reveal class="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-x-6 gap-y-5 px-4 sm:px-6 lg:px-8">
       <SectionHeading eyebrow="Galería" title="Conoce el espacio" emphasis="el espacio" />
       <button
@@ -178,7 +187,7 @@ const boton =
           aria-roledescription="foto"
           :aria-label="`${i + 1} de ${fotos.length}`"
         >
-          <figure>
+          <div>
             <button
               :ref="(el) => (botones[i] = el)"
               type="button"
@@ -198,8 +207,7 @@ const boton =
                 />
               </div>
             </button>
-            <figcaption class="mt-3 text-sm font-medium">{{ foto.label }}</figcaption>
-          </figure>
+          </div>
         </div>
       </div>
     </div>
