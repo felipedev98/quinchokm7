@@ -29,6 +29,9 @@ watch(modalidadElegida, (valor) => { if (valor) quote.modalidad = valor })
 
 const iconos = { espacio: House, alimentacion: UtensilsCrossed }
 
+// En el formulario va primero la opción con alimentación.
+const opcionesModalidad = [...MODALIDADES].reverse()
+
 const documentos = [
   { valor: 'boleta', texto: 'Boleta' },
   { valor: 'factura', texto: 'Factura' },
@@ -170,7 +173,7 @@ const errorText = 'mt-2 flex items-center gap-1.5 text-sm font-medium'
         <legend :class="label">¿Cómo quieres arrendar?</legend>
         <div class="mt-2 grid gap-3 sm:grid-cols-2">
           <label
-            v-for="m in MODALIDADES"
+            v-for="m in opcionesModalidad"
             :key="m.valor"
             class="relative flex h-12 cursor-pointer items-center gap-3 rounded-md border bg-paper px-4 transition-colors duration-150 hover:border-forest/60 has-checked:border-forest has-checked:bg-mist/60 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-forest"
             :class="errors.modalidad ? 'border-2 border-ink' : 'border-sage'"

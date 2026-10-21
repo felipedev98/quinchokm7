@@ -17,7 +17,7 @@ import { whatsappUrl, DIRECT_MESSAGE } from '../lib/whatsapp.js'
         >
           WhatsApp {{ WHATSAPP_DISPLAY }}
         </a>
-        <p class="text-ink/70 sm:text-right">KM 7, Coyhaique</p>
+        <p class="text-ink/70 sm:text-right">Coyhaique, Chile.</p>
       </div>
 
       <img

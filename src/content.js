@@ -31,10 +31,3 @@ export const GALERIA = [
   { src: '/images/quincho/quincho-km7-techo-de-vigas-de-madera.webp', alt: 'Salón con techo alto de vigas de madera y mesas armadas' },
   { src: '/images/quincho/quincho-km7-salon-amplio-con-barra.webp', alt: 'Vista amplia del salón con barra, mesas y ventanales' },
 ]
-
-// Marcadores: reemplazar por testimonios reales y activar TESTIMONIOS_VISIBLES en src/config.js.
-export const TESTIMONIOS = [
-  { quote: '[Testimonio pendiente]', author: '[Nombre, lugar de trabajo]' },
-  { quote: '[Testimonio pendiente]', author: '[Nombre, lugar de trabajo]' },
-  { quote: '[Testimonio pendiente]', author: '[Nombre, lugar de trabajo]' },
-]
