@@ -46,7 +46,7 @@ function abrirMenu() {
 // Sección visible, para marcar su link en el menú.
 const activa = ref('')
 const visibles = new Map()
-let detener = () => {}
+let detener = () => { }
 
 onMounted(() => {
   const secciones = links.map((l) => document.querySelector(l.href)).filter(Boolean)
@@ -68,56 +68,38 @@ onBeforeUnmount(() => detener())
 <template>
   <header
     class="barra-entrada group sticky top-0 z-40 bg-paper/90 backdrop-blur-md transition-shadow duration-300 data-scrolled:shadow-[0_6px_24px_-12px_rgb(42_46_40/0.35)]"
-    :data-scrolled="y > 8 || undefined"
-  >
-    <div class="mx-auto flex h-20 max-w-7xl items-center gap-4 px-4 transition-[height] duration-300 ease-out group-data-scrolled:h-18 sm:h-24 sm:px-6 sm:group-data-scrolled:h-20 lg:px-8">
+    :data-scrolled="y > 8 || undefined">
+    <div
+      class="mx-auto flex h-20 max-w-7xl items-center gap-4 px-4 transition-[height] duration-300 ease-out group-data-scrolled:h-18 sm:h-24 sm:px-6 sm:group-data-scrolled:h-20 lg:px-8">
       <a href="#" class="shrink-0">
-        <img :src="asset('km7-logo.webp')" alt="QuinchoKM7" width="2560" height="386" class="logo h-6 w-auto origin-left transition-transform duration-300 ease-out sm:h-8 sm:group-data-scrolled:scale-90" />
+        <img :src="asset('km7-logo.webp')" alt="QuinchoKM7" width="2560" height="386"
+          class="logo h-6 w-auto origin-left transition-transform duration-300 ease-out sm:h-8 sm:group-data-scrolled:scale-90" />
       </a>
 
       <nav aria-label="Principal" class="ml-auto hidden md:block">
         <ul class="flex items-center gap-8 text-sm font-medium">
           <li v-for="link in links" :key="link.href">
-            <a
-              :href="link.href"
-              class="py-2 transition-colors duration-150 hover:text-forest"
+            <a :href="link.href" class="py-2 transition-colors duration-150 hover:text-forest"
               :class="activa === link.href.slice(1) ? 'text-forest' : 'text-ink/80'"
-              :aria-current="activa === link.href.slice(1) ? 'location' : undefined"
-            >{{ link.label }}</a>
+              :aria-current="activa === link.href.slice(1) ? 'location' : undefined">{{ link.label }}</a>
           </li>
         </ul>
       </nav>
 
       <div class="ml-auto flex items-center gap-1 md:ml-8">
-        <a
-          href="#cotiza"
-          class="inline-flex min-h-11 items-center whitespace-nowrap rounded-md bg-forest px-4 text-[0.8125rem] font-semibold text-paper transition-colors duration-200 hover:bg-forest/90 sm:px-5 sm:text-sm"
-        >
+        <a href="#cotiza"
+          class="inline-flex min-h-11 items-center whitespace-nowrap rounded-md bg-forest px-4 text-[0.8125rem] font-semibold text-paper transition-colors duration-200 hover:bg-forest/90 sm:px-5 sm:text-sm">
           <span class="sm:hidden">Cotizar</span>
           <span class="hidden sm:inline">Cotiza tu evento</span>
         </a>
 
-        <button
-          ref="openBtn"
-          type="button"
+        <button ref="openBtn" type="button"
           class="-mr-2 inline-flex size-11 items-center justify-center rounded-md text-ink md:hidden"
-          aria-label="Abrir menú"
-          aria-haspopup="dialog"
-          :aria-expanded="String(open)"
-          @pointerenter="precargarMenu"
-          @touchstart.passive="precargarMenu"
-          @focus="precargarMenu"
-          @click="abrirMenu"
-        >
+          aria-label="Abrir menú" aria-haspopup="dialog" :aria-expanded="String(open)" @pointerenter="precargarMenu"
+          @touchstart.passive="precargarMenu" @focus="precargarMenu" @click="abrirMenu">
           <Menu :size="24" :stroke-width="1.5" aria-hidden="true" />
         </button>
-        <MobileMenu
-          v-if="menuUsado"
-          v-model:open="open"
-          :links="links"
-          :activa="activa"
-          :retorno="openBtn"
-        />
+        <MobileMenu v-if="menuUsado" v-model:open="open" :links="links" :activa="activa" :retorno="openBtn" />
       </div>
     </div>
   </header>
@@ -144,5 +126,4 @@ onBeforeUnmount(() => detener())
     transform: translateY(-100%);
   }
 }
-
 </style>

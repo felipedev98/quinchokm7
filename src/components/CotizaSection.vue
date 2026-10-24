@@ -27,12 +27,11 @@ const pasos = [
           </p>
 
           <ol class="mt-10 border-t border-paper/20">
-            <li
-              v-for="(paso, i) in pasos"
-              :key="paso.title"
-              class="grid grid-cols-[4.75rem_1fr] gap-x-3 border-b border-paper/20 py-5"
-            >
-              <span class="mt-0.5 inline-flex h-6 items-center justify-self-start rounded-md bg-paper/10 px-2 text-[0.6875rem] font-semibold uppercase tracking-[0.08em]">Paso {{ i + 1 }}</span>
+            <li v-for="(paso, i) in pasos" :key="paso.title"
+              class="grid grid-cols-[4.75rem_1fr] gap-x-3 border-b border-paper/20 py-5">
+              <span
+                class="mt-0.5 inline-flex h-6 items-center justify-self-start rounded-md bg-paper/10 px-2 text-[0.6875rem] font-semibold uppercase tracking-[0.08em]">Paso
+                {{ i + 1 }}</span>
               <div>
                 <h3 class="font-sans text-base font-semibold tracking-normal">{{ paso.title }}</h3>
                 <p class="mt-1 text-sm leading-relaxed text-paper/70">{{ paso.text }}</p>
@@ -40,13 +39,10 @@ const pasos = [
             </li>
           </ol>
 
-          <a
-            :href="whatsappUrl(DIRECT_MESSAGE)"
-            target="_blank"
-            rel="noopener"
-            class="mt-6 inline-block py-3 text-sm font-semibold underline-offset-4 hover:underline"
-          >
-            Prefiero escribir directo por WhatsApp<ArrowUpRight :size="18" :stroke-width="1.5" class="ml-1.5 inline-block align-[-4px]" aria-hidden="true" />
+          <a :href="whatsappUrl(DIRECT_MESSAGE)" target="_blank" rel="noopener"
+            class="mt-6 inline-block py-3 text-sm font-semibold underline-offset-4 hover:underline">
+            Prefiero escribir directo por WhatsApp
+            <ArrowUpRight :size="18" :stroke-width="1.5" class="ml-1.5 inline-block align-[-4px]" aria-hidden="true" />
           </a>
         </Reveal>
 

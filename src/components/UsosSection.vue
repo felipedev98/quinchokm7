@@ -17,7 +17,7 @@ const cifras = [
         <SectionHeading eyebrow="Celebraciones" title="Un espacio solo para tu equipo" emphasis="tu equipo" />
         <div class="md:pt-9">
           <p class="text-pretty text-lg leading-relaxed text-ink">
-            Arriendas el quincho completo. Mientras celebran, nadie más lo usa.
+            Arriendas el quincho completo, así que el espacio es solo de tu equipo mientras dure la celebración.
           </p>
           <dl class="mt-8 border-t border-sage">
             <div v-for="uso in USOS" :key="uso.title" class="border-b border-sage py-4">
@@ -29,12 +29,10 @@ const cifras = [
       </Reveal>
 
       <Reveal as="ul" class="mt-14 grid gap-3 sm:grid-cols-3 md:mt-20" :delay="0.1">
-        <li
-          v-for="c in cifras"
-          :key="c.value"
-          class="grid grid-cols-[7.5rem_1fr] items-center gap-4 rounded-lg border border-sage p-5 sm:block sm:p-6"
-        >
-          <p class="whitespace-nowrap font-serif text-4xl leading-none tracking-tight sm:text-5xl lg:text-6xl">{{ c.value }}</p>
+        <li v-for="c in cifras" :key="c.value"
+          class="grid grid-cols-[7.5rem_1fr] items-center gap-4 rounded-lg border border-sage p-5 sm:block sm:p-6">
+          <p class="whitespace-nowrap font-serif text-4xl leading-none tracking-tight sm:text-5xl lg:text-6xl">{{
+            c.value }}</p>
           <p class="text-sm leading-snug text-ink/70 sm:mt-10">{{ c.label }}</p>
         </li>
       </Reveal>

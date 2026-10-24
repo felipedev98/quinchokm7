@@ -18,13 +18,10 @@ import { osmEmbedUrl, directionsUrl } from '../lib/maps.js'
           <p class="text-pretty text-lg leading-relaxed">
             Sector tranquilo con estacionamiento dentro del recinto.
           </p>
-          <p class="mt-3 text-pretty leading-relaxed text-ink/70">Camino Coyhaique Alto KM 7, Parcelas Entre Vientos, parcela C-4.</p>
-          <a
-            :href="directionsUrl(COORDS)"
-            target="_blank"
-            rel="noopener"
-            class="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-forest px-6 text-sm font-semibold text-forest transition-colors duration-200 hover:bg-forest hover:text-paper"
-          >
+          <p class="mt-3 text-pretty leading-relaxed text-ink/70">Camino Coyhaique Alto KM 7, Parcelas Entre Vientos,
+            parcela C-4.</p>
+          <a :href="directionsUrl(COORDS)" target="_blank" rel="noopener"
+            class="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-forest px-6 text-sm font-semibold text-forest transition-colors duration-200 hover:bg-forest hover:text-paper">
             <Navigation :size="20" :stroke-width="1.5" aria-hidden="true" />
             Cómo llegar
           </a>
@@ -32,19 +29,12 @@ import { osmEmbedUrl, directionsUrl } from '../lib/maps.js'
       </Reveal>
 
       <Reveal class="mt-12 grid gap-3 md:mt-16 md:grid-cols-[1.4fr_1fr]" :delay="0.1">
-        <iframe
-          :src="osmEmbedUrl(COORDS)"
-          title="Mapa de ubicación de QuinchoKM7"
-          loading="lazy"
+        <iframe :src="osmEmbedUrl(COORDS)" title="Mapa de ubicación de QuinchoKM7" loading="lazy"
           referrerpolicy="no-referrer"
-          class="aspect-square w-full rounded-lg border border-sage sm:aspect-[4/3] md:aspect-auto md:h-full md:min-h-96"
-        ></iframe>
-        <img
-          :src="asset('images/quincho/quincho-km7-exterior-coyhaique.webp')"
-          alt="Exterior del QuinchoKM7 rodeado de álamos, con la cordillera nevada de fondo"
-          loading="lazy"
-          class="hidden aspect-[4/5] w-full rounded-lg object-cover md:block"
-        />
+          class="aspect-square w-full rounded-lg border border-sage sm:aspect-[4/3] md:aspect-auto md:h-full md:min-h-96"></iframe>
+        <img :src="asset('images/quincho/quincho-km7-exterior-coyhaique.webp')"
+          alt="Exterior del QuinchoKM7 rodeado de álamos, con la cordillera nevada de fondo" loading="lazy"
+          class="hidden aspect-[4/5] w-full rounded-lg object-cover md:block" />
       </Reveal>
     </div>
   </section>
