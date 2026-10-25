@@ -29,9 +29,17 @@ import { osmEmbedUrl, directionsUrl } from '../lib/maps.js'
       </Reveal>
 
       <Reveal class="mt-12 grid gap-3 md:mt-16 md:grid-cols-[1.4fr_1fr]" :delay="0.1">
-        <iframe :src="osmEmbedUrl(COORDS)" title="Mapa de ubicación de QuinchoKM7" loading="lazy"
-          referrerpolicy="no-referrer"
-          class="aspect-square w-full rounded-lg border border-sage sm:aspect-[4/3] md:aspect-auto md:h-full md:min-h-96"></iframe>
+        <!-- La barra inferior del mapa (enlaces de OpenStreetMap) queda fuera del recorte.
+             La licencia exige el crédito, así que va uno propio en la esquina. -->
+        <div
+          class="relative aspect-square w-full overflow-hidden rounded-lg border border-sage sm:aspect-[4/3] md:aspect-auto md:h-full md:min-h-96">
+          <iframe :src="osmEmbedUrl(COORDS)" title="Mapa de ubicación de QuinchoKM7" loading="lazy"
+            referrerpolicy="no-referrer" class="absolute inset-x-0 top-0 h-[calc(100%+2rem)] w-full"></iframe>
+          <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener"
+            class="absolute right-2 bottom-2 rounded-sm bg-paper/85 px-1.5 py-0.5 text-[0.6875rem] text-ink/70 transition-colors duration-150 hover:text-forest">
+            © OpenStreetMap
+          </a>
+        </div>
         <img :src="asset('images/quincho/quincho-km7-exterior-coyhaique.webp')"
           alt="Exterior del QuinchoKM7 rodeado de álamos, con la cordillera nevada de fondo" loading="lazy"
           class="hidden aspect-[4/5] w-full rounded-lg object-cover md:block" />
