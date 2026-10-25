@@ -21,13 +21,19 @@ export const EQUIPAMIENTO = [
 
 // Fotos del lugar (public/images/quincho). Solo texto alternativo: la galería no lleva leyendas.
 export const GALERIA = [
+  { src: '/images/quincho/quincho-km7-salon-armado-para-evento.webp', alt: 'Salón con mesas armadas para un evento, con sillones junto al ventanal' },
   { src: '/images/quincho/quincho-km7-salon-principal-coyhaique.webp', alt: 'Salón principal del QuinchoKM7 con mesas, barra, sillones y ventanales' },
-  { src: '/images/quincho/quincho-km7-salon-con-sillones-y-plantas.webp', alt: 'Mesas puestas y zona de sillones junto a los ventanales del quincho' },
+  { src: '/images/quincho/quincho-km7-mesas-largas-con-ventanal.webp', alt: 'Mesas largas puestas con bancas, junto al ventanal y los sillones' },
   { src: '/images/quincho/quincho-km7-comedor-con-ventanal.webp', alt: 'Comedor con mesas de mantel a cuadros y un gran ventanal hacia los árboles' },
-  { src: '/images/quincho/quincho-km7-mesas-y-repisas-de-madera.webp', alt: 'Mesas armadas para un grupo en el salón de madera' },
+  { src: '/images/quincho/quincho-km7-mesa-larga-puesta.webp', alt: 'Mesa larga puesta con platos, copas y cubiertos para todo el grupo' },
+  { src: '/images/quincho/quincho-km7-salon-con-sillones-y-plantas.webp', alt: 'Mesas puestas y zona de sillones junto a los ventanales del quincho' },
+  { src: '/images/quincho/quincho-km7-salon-con-mesas-para-grupos.webp', alt: 'Salón con mesas largas puestas para grupos y la cocina a leña al fondo' },
   { src: '/images/quincho/quincho-km7-mesa-junto-al-ventanal.webp', alt: 'Mesa para dos junto al ventanal con vista al jardín' },
-  { src: '/images/quincho/quincho-km7-mesas-con-luz-natural.webp', alt: 'Mesas iluminadas con luz natural junto al ventanal' },
+  { src: '/images/quincho/quincho-km7-mesas-armadas-junto-al-ventanal.webp', alt: 'Mesas armadas para un evento junto al ventanal' },
   { src: '/images/quincho/quincho-km7-salon-con-tv-y-barra.webp', alt: 'Salón con TV, barra con taburetes y mesas para el grupo' },
+  { src: '/images/quincho/quincho-km7-mesas-puestas-para-el-grupo.webp', alt: 'Mesas puestas para el grupo, con bancas y sillas, en el salón de madera' },
+  { src: '/images/quincho/quincho-km7-sillones-con-vista-al-cerro.webp', alt: 'Sillones junto al ventanal con vista al cerro y los campos' },
+  { src: '/images/quincho/quincho-km7-cocina-a-lena-y-mesa-de-te.webp', alt: 'Cocina a leña y mesa con termo, tazas y flores' },
   { src: '/images/quincho/quincho-km7-techo-de-vigas-de-madera.webp', alt: 'Salón con techo alto de vigas de madera y mesas armadas' },
   { src: '/images/quincho/quincho-km7-salon-amplio-con-barra.webp', alt: 'Vista amplia del salón con barra, mesas y ventanales' },
 ]
