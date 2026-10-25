@@ -16,8 +16,8 @@ import { whatsappUrl, DIRECT_MESSAGE } from '../lib/whatsapp.js'
         <p class="text-ink/70 sm:text-right">Coyhaique, Chile.</p>
       </div>
 
-      <img :src="asset('km7-logo.webp')" alt="QuinchoKM7" width="2560" height="386" loading="lazy"
-        class="mt-12 w-full md:mt-16" style="aspect-ratio: 2560 / 386; object-fit: cover; object-position: top" />
+      <img :src="asset('km7-logo.svg')" alt="QuinchoKM7" width="515" height="79" loading="lazy"
+        class="mt-12 h-auto w-full md:mt-16" />
     </div>
   </footer>
 </template>

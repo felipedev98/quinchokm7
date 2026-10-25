@@ -72,8 +72,8 @@ onBeforeUnmount(() => detener())
     <div
       class="mx-auto flex h-20 max-w-7xl items-center gap-4 px-4 transition-[height] duration-300 ease-out group-data-scrolled:h-18 sm:h-24 sm:px-6 sm:group-data-scrolled:h-20 lg:px-8">
       <a href="#" class="shrink-0">
-        <img :src="asset('km7-logo.webp')" alt="QuinchoKM7" width="2560" height="386"
-          class="logo h-6 w-auto origin-left transition-transform duration-300 ease-out sm:h-8 sm:group-data-scrolled:scale-90" />
+        <img :src="asset('km7-logo.svg')" alt="QuinchoKM7" width="515" height="79"
+          class="h-6 w-auto origin-left transition-transform duration-300 ease-out sm:h-8 sm:group-data-scrolled:scale-90" />
       </a>
 
       <nav aria-label="Principal" class="ml-auto hidden md:block">
@@ -106,13 +106,6 @@ onBeforeUnmount(() => detener())
 </template>
 
 <style>
-/* El archivo del logo trae margen transparente abajo: se recorta a la altura del dibujo. */
-.logo {
-  aspect-ratio: 2560 / 386;
-  object-fit: cover;
-  object-position: top;
-}
-
 /* La barra entra desde arriba al cargar. */
 @media (prefers-reduced-motion: no-preference) {
   .barra-entrada {
